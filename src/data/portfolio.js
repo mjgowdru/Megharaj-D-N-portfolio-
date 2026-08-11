@@ -224,9 +224,11 @@ export const activities = [
     status:      'Active',
   },
   {
-    category:    'Open-Source Learning',
-    title:       'Contributing & Collaborating',
-    description: 'Learning through open-source — studying well-structured codebases, understanding contribution workflows, and preparing to make meaningful contributions to AI/ML tooling projects.',
+    category:    'Achie',
+    title:       '1st Place – “Visualize IT” | DIGITISE 2K25',
+    description: 'Secured 1st place in the “Visualize IT” event at DIGITISE 2K25, the annual technical fest organized by the Department of Information Science & Engineering, Adichunchanagiri Institute of Technology, Chikkamagalur.
+
+This achievement reflects my ability to combine creativity, technical visualization, innovation, and problem-solving skills to present impactful technology-driven ideas. The event provided valuable experience in transforming concepts into clear and engaging visual solutions while working in a competitive technical environment.',
     note:        'Building toward first open-source contribution',
     status:      'Learning',
   },
