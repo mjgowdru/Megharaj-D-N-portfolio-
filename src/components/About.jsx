@@ -1,243 +1,120 @@
-import { useEffect, useRef, useState } from 'react'
-import { GraduationCap, MapPin, Code2, Cpu, Globe, Quote } from 'lucide-react'
-import { personal, bio, education, personalQuote } from '../data/portfolio'
+import { useRef, useState, useEffect } from 'react'
+import { personal, bio, personalQuote } from '../data/portfolio'
+import { GraduationCap, MapPin, Quote, Sparkles } from 'lucide-react'
 
-function useInView(threshold = 0.15) {
-  const ref = useRef(null)
-  const [visible, setVisible] = useState(false)
+function useFade() {
+  const ref = useRef(null); const [v, setV] = useState(false)
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true) },
-      { threshold }
-    )
-    if (ref.current) observer.observe(ref.current)
-    return () => observer.disconnect()
-  }, [threshold])
-  return [ref, visible]
+    const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) setV(true) }, { threshold: 0.08 })
+    if (ref.current) o.observe(ref.current); return () => o.disconnect()
+  }, [])
+  return { ref, v }
 }
 
-const highlights = [
-  {
-    icon: <Cpu size={18} />,
-    title: 'AI & Machine Learning',
-    desc: 'Semantic similarity, NLP pipelines, transformer models — I build systems that understand language, not just parse it.',
-  },
-  {
-    icon: <Code2 size={18} />,
-    title: 'Full-Stack Engineering',
-    desc: 'Flask APIs, React UIs, MongoDB — from backend logic to deployed products, end to end.',
-  },
-  {
-    icon: <Globe size={18} />,
-    title: 'Blockchain & Web3',
-    desc: 'Solidity smart contracts, Web3.py, and decentralized verification systems.',
-  },
+const FACTS = [
+  { icon: <GraduationCap size={15} />, text: 'B.E. AI & ML · AIT Chikkamagalur', hi: 'CGPA 8.01' },
+  { icon: <Sparkles size={15} />, text: 'VTU Youth Fest Representative', hi: '4 Years' },
+  { icon: <MapPin size={15} />, text: 'Karnataka, India', hi: 'Open to Relocation' },
 ]
 
 export default function About() {
-  const [ref, visible] = useInView()
+  const { ref, v } = useFade()
+  const [loaded, setLoaded] = useState(false)
+  const [err, setErr] = useState(false)
 
   return (
-    <section
-      id="about"
-      ref={ref}
-      className="section-padding"
-      style={{ background: 'var(--color-bg)', position: 'relative' }}
-    >
-      <div className="skyline-divider" style={{ maxWidth: '600px', marginBottom: '5rem' }} />
-
-      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        {/* ── TOP — header ── */}
-        <div
-          style={{
-            marginBottom: '3.5rem',
-            opacity: visible ? 1 : 0,
-            transform: visible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.7s, transform 0.7s',
-          }}
-        >
-          <p className="section-label">About Me</p>
-          <h2
-            className="font-display"
-            style={{
-              fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
-              fontWeight: 800,
-              letterSpacing: '-0.02em',
-              lineHeight: 1.15,
-              maxWidth: '700px',
-            }}
+    <section id="about" ref={ref} className="section" style={{ background:'var(--bg-soft)' }}>
+      <div className="container">
+        <div style={{ display:'grid', gridTemplateColumns:'1fr', gap:64, alignItems:'center' }} className="about-grid">
+          {/* ── Photo column ── */}
+          <div style={{ opacity: v ? 1 : 0, transform: v ? 'none' : 'translateX(-20px)', transition:'all 0.7s var(--ease-out)' }}
+            className="about-photo-col"
           >
-            Turning ideas into{' '}
-            <span className="gradient-text">working software</span>
-          </h2>
-        </div>
+            <div style={{ position:'relative', maxWidth:360, margin:'0 auto' }}>
+              {/* Corner accents */}
+              <div style={{ position:'absolute', top:-10, left:-10, width:56, height:56, borderTop:'2px solid rgba(99,202,236,0.35)', borderLeft:'2px solid rgba(99,202,236,0.35)', borderRadius:'8px 0 0 0', pointerEvents:'none' }} />
+              <div style={{ position:'absolute', bottom:-10, right:-10, width:56, height:56, borderBottom:'2px solid rgba(99,202,236,0.35)', borderRight:'2px solid rgba(99,202,236,0.35)', borderRadius:'0 0 8px 0', pointerEvents:'none' }} />
 
-        {/* ── MAIN GRID — photo left, content right ── */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '3.5rem',
-            alignItems: 'start',
-            marginBottom: '3rem',
-          }}
-        >
-          {/* LEFT — photo + quick facts */}
-          <div
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? 'translateX(0)' : 'translateX(-24px)',
-              transition: 'opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s',
-            }}
-          >
-            {/* Photo card */}
-            <div
-              style={{
-                position: 'relative',
-                borderRadius: 'var(--radius-2xl)',
-                overflow: 'hidden',
-                aspectRatio: '4 / 5',
-                background: 'var(--color-surface-2)',
-                border: '1px solid rgba(255,255,255,0.06)',
-                boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
-                marginBottom: '1.25rem',
-              }}
-            >
-              <img
-                src={personal.profilePhoto}
-                alt={`${personal.name} — portrait`}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none'
-                  e.currentTarget.nextSibling.style.display = 'flex'
-                }}
-              />
-              {/* Fallback */}
-              <div
-                style={{
-                  display: 'none',
-                  width: '100%',
-                  height: '100%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'column',
-                  gap: '0.75rem',
-                  position: 'absolute',
-                  inset: 0,
-                }}
-              >
-                <span style={{ fontFamily: 'var(--font-display)', fontSize: '4rem', fontWeight: 900, color: 'var(--color-accent)', opacity: 0.4 }}>
-                  {personal.initials}
-                </span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Replace /public/profile.jpg</span>
+              {/* Image */}
+              <div style={{ borderRadius:18, overflow:'hidden', border:'1px solid var(--border)', background:'var(--bg-card-2)', aspectRatio:'3/4' }}>
+                {!err ? (
+                  <img
+                    src={personal.profilePhoto} alt="Prathiksha P Mallya"
+                    onLoad={() => setLoaded(true)} onError={() => setErr(true)}
+                    style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'top', display:'block', opacity: loaded ? 1 : 0, transition:'opacity 0.5s' }}
+                  />
+                ) : (
+                  <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                    <span style={{ fontFamily:'var(--font-display)', fontWeight:900, fontSize:64 }} className="text-grad-cyan">PM</span>
+                  </div>
+                )}
               </div>
 
-              {/* Overlay gradient at bottom */}
+              {/* Name card */}
               <div style={{
-                position: 'absolute', bottom: 0, left: 0, right: 0,
-                height: '40%',
-                background: 'linear-gradient(to top, rgba(11,11,15,0.85) 0%, transparent 100%)',
-              }} />
-
-              {/* Name tag on photo */}
-              <div style={{
-                position: 'absolute', bottom: '1rem', left: '1rem', right: '1rem',
+                position:'absolute', bottom:20, left:16, right:16,
+                background:'rgba(4,6,15,0.88)', backdropFilter:'blur(16px)',
+                border:'1px solid var(--border-hi)', borderRadius:12,
+                padding:'12px 16px',
               }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1rem', color: 'var(--color-text-primary)' }}>
-                  {personal.name}
-                </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--color-accent)', fontWeight: 600 }}>
-                  {personal.title}
-                </div>
+                <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:14, color:'var(--t1)', marginBottom:2 }}>{personal.name}</div>
+                <div style={{ fontSize:11.5, fontWeight:600, color:'var(--cyan)' }}>AI & ML Graduate · Java Full Stack Dev</div>
               </div>
-            </div>
-
-            {/* Quick facts */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-              {[
-                { icon: <GraduationCap size={14} />, text: `${education.degree} · ${education.semester}` },
-                { icon: <GraduationCap size={14} />, text: education.university },
-                { icon: <MapPin size={14} />, text: personal.location },
-              ].map(({ icon, text }) => (
-                <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>
-                  <span style={{ color: 'var(--color-accent)', flexShrink: 0 }}>{icon}</span>
-                  {text}
-                </div>
-              ))}
             </div>
           </div>
 
-          {/* RIGHT — bio + quote + highlights */}
-          <div
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? 'translateX(0)' : 'translateX(24px)',
-              transition: 'opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s',
-            }}
-          >
-            <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.975rem', lineHeight: 1.85, marginBottom: '1.1rem' }}>
-              {bio.p1}
-            </p>
-            <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.975rem', lineHeight: 1.85, marginBottom: '2rem' }}>
-              {bio.p2}
-            </p>
+          {/* ── Text column ── */}
+          <div style={{ opacity: v ? 1 : 0, transform: v ? 'none' : 'translateX(20px)', transition:'all 0.7s 0.15s var(--ease-out)' }}>
+            <p className="eyebrow">About Me</p>
+            <h2 className="section-title" style={{ marginBottom:24 }}>
+              Where <span className="text-grad-cyan">Artificial Intelligence</span>
+              <br />meets <span className="text-grad-amber">Full Stack Engineering</span>
+            </h2>
 
-            {/* Personal quote */}
-            <blockquote
-              style={{
-                padding: '1.25rem 1.5rem',
-                background: 'rgba(245,197,66,0.05)',
-                border: '1px solid rgba(245,197,66,0.15)',
-                borderLeft: '3px solid var(--color-accent)',
-                borderRadius: '0 var(--radius-md) var(--radius-md) 0',
-                marginBottom: '2rem',
-                position: 'relative',
-              }}
-            >
-              <Quote size={16} style={{ color: 'var(--color-accent)', opacity: 0.6, marginBottom: '0.375rem' }} />
-              <p style={{ fontSize: '0.9rem', color: 'var(--color-text-primary)', fontStyle: 'italic', lineHeight: 1.7, fontWeight: 500 }}>
-                {personalQuote}
-              </p>
-            </blockquote>
+            <div style={{ display:'flex', flexDirection:'column', gap:14, marginBottom:28 }}>
+              {[bio.p1, bio.p2, bio.p3].map((p, i) => (
+                <p key={i} style={{ fontSize:14.5, color:'var(--t2)', lineHeight:1.75 }}>{p}</p>
+              ))}
+            </div>
 
-            {/* Highlight cards */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {highlights.map((item, i) => (
-                <div
-                  key={item.title}
-                  className="glass-card"
-                  style={{
-                    padding: '1.125rem 1.25rem',
-                    display: 'flex',
-                    gap: '0.875rem',
-                    alignItems: 'flex-start',
-                    opacity: visible ? 1 : 0,
-                    transform: visible ? 'translateX(0)' : 'translateX(20px)',
-                    transition: `opacity 0.6s ease ${0.35 + i * 0.1}s, transform 0.6s ease ${0.35 + i * 0.1}s`,
-                  }}
+            {/* Quick facts */}
+            <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:28 }}>
+              {FACTS.map((f, i) => (
+                <div key={i} style={{ display:'flex', alignItems:'center', gap:12 }}>
+                  <span style={{ width:32, height:32, borderRadius:8, background:'rgba(99,202,236,0.08)', border:'1px solid rgba(99,202,236,0.14)', display:'flex', alignItems:'center', justifyContent:'center', color:'var(--cyan)', flexShrink:0 }}>{f.icon}</span>
+                  <span style={{ fontSize:13.5, color:'var(--t2)' }}>{f.text} —{' '}<span style={{ fontWeight:700, color:'var(--amber)' }}>{f.hi}</span></span>
+                </div>
+              ))}
+            </div>
+
+            {/* Quote */}
+            <div style={{ borderLeft:'2px solid rgba(99,202,236,0.3)', paddingLeft:16, marginBottom:28 }}>
+              <Quote size={14} style={{ color:'rgba(99,202,236,0.4)', marginBottom:8 }} />
+              <p style={{ fontSize:13.5, color:'rgba(238,242,255,0.65)', fontStyle:'italic', lineHeight:1.7 }}>{personalQuote}</p>
+            </div>
+
+            {/* Stat pills */}
+            <div style={{ display:'flex', flexWrap:'wrap', gap:10 }}>
+              {[['Deep Learning','CNN, LSTM, Transfer Learning'], ['Full Stack Java','Spring MVC, Hibernate'], ['State Winner','Data Visualization 2024']].map(([title, sub]) => (
+                <div key={title} style={{ padding:'10px 16px', borderRadius:10, background:'var(--bg-card)', border:'1px solid var(--border)', transition:'all 0.2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor='var(--border-hi)'; e.currentTarget.style.transform='translateY(-2px)' }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.transform='none' }}
                 >
-                  <div style={{
-                    width: '36px', height: '36px', borderRadius: '10px',
-                    background: 'rgba(245,197,66,0.1)', border: '1px solid rgba(245,197,66,0.2)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'var(--color-accent)', flexShrink: 0,
-                  }}>
-                    {item.icon}
-                  </div>
-                  <div>
-                    <h3 className="font-display" style={{ fontSize: '0.875rem', fontWeight: 700, marginBottom: '0.2rem', color: 'var(--color-text-primary)' }}>
-                      {item.title}
-                    </h3>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
-                      {item.desc}
-                    </p>
-                  </div>
+                  <div style={{ fontSize:12, fontWeight:700, color:'var(--t1)', marginBottom:2 }}>{title}</div>
+                  <div style={{ fontSize:11, color:'var(--t3)' }}>{sub}</div>
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media(min-width:900px){
+          .about-grid{ grid-template-columns:1fr 1.2fr !important; }
+        }
+        .about-photo-col{ display:flex; justify-content:center; }
+      `}</style>
     </section>
   )
 }

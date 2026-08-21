@@ -1,440 +1,278 @@
-import { ArrowDown, ChevronRight, Download, Mail, MapPin } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { personal, roles, tagline, stats } from '../data/portfolio'
+import { personal } from '../data/portfolio'
+import { Download, ArrowRight, Mail, MapPin, ChevronDown } from 'lucide-react'
+import { FaGithub, FaLinkedin } from 'react-icons/fa'
 
-function useTypewriter(words, speed = 110, pause = 2200) {
+const ROLES = ['AI & ML Engineer', 'Java Full Stack Developer', 'Computer Vision Engineer', 'Deep Learning Developer']
+const STATS = [
+  { n: '8.01', sub: 'CGPA' },
+  { n: '4 mo', sub: 'Internship' },
+  { n: '1st',  sub: 'State Award' },
+  { n: '4 yr', sub: 'VTU Fest' },
+]
+
+function useTypewriter(words) {
   const [display, setDisplay] = useState('')
-  const [wordIdx, setWordIdx] = useState(0)
-  const [charIdx, setCharIdx] = useState(0)
-  const [deleting, setDeleting] = useState(false)
+  const [wIdx, setWIdx]       = useState(0)
+  const [cIdx, setCIdx]       = useState(0)
+  const [del,  setDel]        = useState(false)
 
   useEffect(() => {
-    const current = words[wordIdx]
-    const timeout = deleting
-      ? setTimeout(() => {
-          setDisplay((d) => d.slice(0, -1))
-          setCharIdx((c) => c - 1)
-          if (charIdx - 1 === 0) {
-            setDeleting(false)
-            setWordIdx((w) => (w + 1) % words.length)
-          }
-        }, speed / 2)
-      : setTimeout(() => {
-          setDisplay(current.slice(0, charIdx + 1))
-          setCharIdx((c) => c + 1)
-          if (charIdx + 1 === current.length) {
-            setTimeout(() => setDeleting(true), pause)
-          }
-        }, speed)
-    return () => clearTimeout(timeout)
-  }, [charIdx, deleting, wordIdx, words, speed, pause])
+    const word = words[wIdx]
+    const t = setTimeout(() => {
+      if (!del) {
+        setDisplay(word.slice(0, cIdx + 1))
+        if (cIdx + 1 === word.length) setTimeout(() => setDel(true), 1800)
+        else setCIdx(c => c + 1)
+      } else {
+        setDisplay(word.slice(0, cIdx - 1))
+        if (cIdx - 1 === 0) { setDel(false); setWIdx(w => (w + 1) % words.length); setCIdx(0) }
+        else setCIdx(c => c - 1)
+      }
+    }, del ? 36 : 72)
+    return () => clearTimeout(t)
+  }, [cIdx, del, wIdx, words])
 
   return display
 }
 
-function PhotoFrame({ src, name }) {
-  const [loaded, setLoaded] = useState(false)
-  const [err, setErr]       = useState(false)
-
-  return (
-    <div
-      style={{
-        position: 'relative',
-        width: 'clamp(260px, 36vw, 420px)',
-        aspectRatio: '1 / 1',
-        flexShrink: 0,
-      }}
-    >
-      {/* Outer decorative ring — animated */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: '-14px',
-          borderRadius: '50%',
-          border: '1.5px dashed rgba(245,197,66,0.25)',
-          animation: 'spin-slow 18s linear infinite',
-        }}
-      />
-      {/* Inner ring */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: '-6px',
-          borderRadius: '50%',
-          border: '1px solid rgba(245,197,66,0.12)',
-        }}
-      />
-
-      {/* Glow blob behind photo */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: '10%',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(245,197,66,0.22) 0%, transparent 70%)',
-          filter: 'blur(24px)',
-        }}
-      />
-
-      {/* Photo circle */}
-      <div
-        style={{
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          borderRadius: '50%',
-          overflow: 'hidden',
-          border: '3px solid rgba(245,197,66,0.35)',
-          background: 'var(--color-surface-2)',
-          boxShadow: '0 0 60px rgba(245,197,66,0.15), 0 20px 60px rgba(0,0,0,0.6)',
-        }}
-      >
-        {!err ? (
-          <img
-            src={src}
-            alt={`${name} — profile photo`}
-            onLoad={() => setLoaded(true)}
-            onError={() => setErr(true)}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'top center',
-              opacity: loaded ? 1 : 0,
-              transition: 'opacity 0.5s',
-            }}
-          />
-        ) : (
-          /* Fallback initials if image not found */
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'column',
-              gap: '0.5rem',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2.5rem, 8vw, 5rem)',
-                fontWeight: 900,
-                background: 'linear-gradient(135deg, #F5C542, #D4A82A)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                letterSpacing: '-0.04em',
-              }}
-            >
-              {personal.initials}
-            </span>
-            <span style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)', letterSpacing: '0.1em' }}>
-              Add profile.jpg to /public
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* Status badge — floating on photo */}
-      {personal.available && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '8%',
-            right: '-4%',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-            padding: '0.45rem 0.875rem',
-            background: 'rgba(11,11,15,0.9)',
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(74,222,128,0.3)',
-            borderRadius: '9999px',
-            fontSize: '0.72rem',
-            fontWeight: 700,
-            color: '#4ade80',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80', boxShadow: '0 0 8px #4ade80' }} />
-          Open to Internships
-        </div>
-      )}
-
-      {/* Location chip — top left */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '6%',
-          left: '-8%',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.35rem',
-          padding: '0.4rem 0.75rem',
-          background: 'rgba(11,11,15,0.88)',
-          backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          borderRadius: '9999px',
-          fontSize: '0.7rem',
-          color: 'var(--color-text-secondary)',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
-        }}
-      >
-        <MapPin size={11} style={{ color: 'var(--color-accent)' }} />
-        {personal.location}
-      </div>
-
-      <style>{`
-        @keyframes spin-slow { to { transform: rotate(360deg); } }
-      `}</style>
-    </div>
-  )
+function useFadeIn() {
+  const ref = useRef(null)
+  const [v, setV] = useState(false)
+  useEffect(() => {
+    const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) setV(true) }, { threshold: 0.1 })
+    if (ref.current) o.observe(ref.current)
+    return () => o.disconnect()
+  }, [])
+  return { ref, v }
 }
 
-export default function Hero() {
-  const typed     = useTypewriter(roles)
-  const canvasRef = useRef(null)
-
+function Particle({ canvas }) {
   useEffect(() => {
-    const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
-    let animId
-    const particles = []
+    const pts = []
+    let raf, W, H
 
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight }
+    const resize = () => {
+      W = canvas.width  = window.innerWidth
+      H = canvas.height = window.innerHeight
+    }
     resize()
     window.addEventListener('resize', resize)
 
-    for (let i = 0; i < 55; i++) {
-      particles.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        r: Math.random() * 1.2 + 0.2,
-        vx: (Math.random() - 0.5) * 0.18,
-        vy: (Math.random() - 0.5) * 0.18,
-        a: Math.random() * 0.4 + 0.08,
-      })
-    }
+    for (let i = 0; i < 55; i++)
+      pts.push({ x: Math.random() * 1600, y: Math.random() * 900, vx: (Math.random() - .5) * .15, vy: (Math.random() - .5) * .15, r: Math.random() * 1.1 + .3 })
 
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      particles.forEach((p) => {
-        p.x = (p.x + p.vx + canvas.width)  % canvas.width
-        p.y = (p.y + p.vy + canvas.height) % canvas.height
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(245,197,66,${p.a})`
-        ctx.fill()
+      ctx.clearRect(0, 0, W, H)
+      pts.forEach(p => {
+        p.x = (p.x + p.vx + W) % W
+        p.y = (p.y + p.vy + H) % H
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(99,202,236,0.35)'; ctx.fill()
       })
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x
-          const dy = particles[i].y - particles[j].y
-          const d  = Math.hypot(dx, dy)
-          if (d < 110) {
-            ctx.beginPath()
-            ctx.moveTo(particles[i].x, particles[i].y)
-            ctx.lineTo(particles[j].x, particles[j].y)
-            ctx.strokeStyle = `rgba(245,197,66,${0.045 * (1 - d / 110)})`
-            ctx.lineWidth = 0.5
-            ctx.stroke()
-          }
+      for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+        const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y)
+        if (d < 100) {
+          ctx.beginPath()
+          ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y)
+          ctx.strokeStyle = `rgba(99,202,236,${0.06 * (1 - d / 100)})`
+          ctx.lineWidth = .6; ctx.stroke()
         }
       }
-      animId = requestAnimationFrame(draw)
+      raf = requestAnimationFrame(draw)
     }
     draw()
-    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize) }
-  }, [])
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize) }
+  }, [canvas])
+  return null
+}
+
+export default function Hero() {
+  const typed = useTypewriter(ROLES)
+  const { ref, v } = useFadeIn()
+  const canvasRef = useRef(null)
 
   return (
-    <section
-      id="hero"
+    <section id="hero" ref={ref}
       style={{
         position: 'relative',
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
+        background: 'var(--bg)',
         overflow: 'hidden',
-        padding: '5rem 1.5rem 3rem',
       }}
+      className="dot-grid"
     >
-      <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }} aria-hidden="true" />
+      {/* canvas */}
+      <canvas ref={canvasRef} style={{ position:'absolute', inset:0, zIndex:0, pointerEvents:'none' }} />
+      <Particle canvas={canvasRef.current} />
 
-      {/* Ambient glows */}
-      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-        <div style={{ position: 'absolute', width: '700px', height: '700px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(245,197,66,0.06) 0%, transparent 70%)', top: '-150px', right: '5%', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(245,197,66,0.04) 0%, transparent 70%)', bottom: '10%', left: '-5%', pointerEvents: 'none' }} />
+      {/* Ambient blobs */}
+      <div style={{ position:'absolute', inset:0, zIndex:0, pointerEvents:'none' }}>
+        <div style={{ position:'absolute', top:'-10%', right:'-5%', width:600, height:600, borderRadius:'50%', background:'radial-gradient(circle, rgba(99,202,236,0.07) 0%, transparent 70%)', filter:'blur(40px)' }} />
+        <div style={{ position:'absolute', bottom:'0%', left:'-8%', width:400, height:400, borderRadius:'50%', background:'radial-gradient(circle, rgba(240,180,41,0.04) 0%, transparent 70%)', filter:'blur(40px)' }} />
       </div>
 
-      {/* ── MAIN CONTENT — two column ── */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          maxWidth: '1100px',
-          width: '100%',
-          margin: '0 auto',
-          display: 'flex',
+      <div className="container" style={{ position:'relative', zIndex:1, paddingTop:100, paddingBottom:80 }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr',
+          gap: 60,
           alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '3rem',
-          flexWrap: 'wrap',
-        }}
-      >
-        {/* LEFT — text */}
-        <div style={{ flex: '1 1 340px', minWidth: 0 }}>
+        }} className="hero-grid">
+          {/* ── LEFT CONTENT ── */}
+          <div style={{ opacity: v ? 1 : 0, transform: v ? 'none' : 'translateY(24px)', transition: 'all 0.7s var(--ease-out)' }}>
+            {/* Status pill */}
+            <div style={{ display:'inline-flex', alignItems:'center', gap:8, marginBottom:28,
+              padding:'6px 14px', borderRadius:999, border:'1px solid rgba(99,202,236,0.2)',
+              background:'rgba(99,202,236,0.06)', fontSize:12, fontWeight:600, color:'var(--cyan)',
+            }}>
+              <span style={{ width:7, height:7, borderRadius:'50%', background:'var(--cyan)', boxShadow:'0 0 8px var(--cyan)', animation:'glow 2s ease-in-out infinite' }} />
+              Available for Opportunities
+            </div>
 
-          {/* Greeting */}
-          <p
-            className="animate-fade-in"
-            style={{
-              fontSize: '0.85rem',
-              color: 'var(--color-text-secondary)',
-              marginBottom: '0.75rem',
-              letterSpacing: '0.04em',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-            }}
-          >
-            <span style={{ fontSize: '1.1rem' }}>👋</span>
-            Hey there, I'm
-          </p>
+            {/* Name */}
+            <h1 style={{ fontFamily:'var(--font-display)', fontWeight:900, letterSpacing:'-0.03em', lineHeight:1.08, marginBottom:20 }}>
+              <span style={{ display:'block', fontSize:'clamp(14px,2.5vw,18px)', fontWeight:700, color:'var(--t2)', letterSpacing:0, marginBottom:4 }}>
+                Hi there, I'm
+              </span>
+              <span style={{ display:'block', fontSize:'clamp(36px,6vw,64px)', color:'var(--t1)' }}>
+                Prathiksha
+              </span>
+              <span style={{ display:'block', fontSize:'clamp(36px,6vw,64px)' }} className="text-grad-cyan">
+                P Mallya
+              </span>
+            </h1>
 
-          {/* Name */}
-          <h1
-            className="font-display animate-fade-in-up"
-            style={{
-              fontSize: 'clamp(2.4rem, 6vw, 4.8rem)',
-              fontWeight: 900,
-              letterSpacing: '-0.03em',
-              lineHeight: 1.0,
-              marginBottom: '0.75rem',
-            }}
-          >
-            {personal.firstName}<br />
-            <span className="gradient-text" style={{ fontSize: '0.65em', letterSpacing: '-0.01em' }}>
-              D N
-            </span>
-          </h1>
+            {/* Typewriter */}
+            <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:24, minHeight:36 }}>
+              <div style={{ width:3, height:24, borderRadius:3, background:'var(--cyan)', flexShrink:0 }} />
+              <span style={{ fontFamily:'var(--font-display)', fontSize:'clamp(14px,2vw,18px)', fontWeight:600, color:'var(--t2)' }}>
+                {typed}
+                <span style={{ display:'inline-block', width:2, height:'1em', background:'var(--cyan)', marginLeft:2, verticalAlign:'middle', animation:'glow 0.8s ease-in-out infinite' }} />
+              </span>
+            </div>
 
-          {/* Typewriter role */}
-          <div
-            className="animate-fade-in-up delay-200"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.375rem',
-              marginBottom: '1.25rem',
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(0.9rem, 2vw, 1.2rem)',
-              fontWeight: 600,
-              color: 'var(--color-accent)',
-              letterSpacing: '0.08em',
-            }}
-          >
-            <span style={{ color: 'var(--color-text-muted)', fontWeight: 400 }}>—</span>
-            {typed}
-            <span style={{
-              display: 'inline-block', width: '2px', height: '1.1em',
-              background: 'var(--color-accent)', borderRadius: '1px',
-              animation: 'fadeIn 0.7s ease infinite alternate',
-            }} />
-          </div>
+            {/* Bio */}
+            <p style={{ fontSize:15, color:'var(--t2)', lineHeight:1.75, maxWidth:520, marginBottom:36, borderLeft:'2px solid rgba(99,202,236,0.25)', paddingLeft:16 }}>
+              B.E. AI & ML graduate from AIT Chikkamagalur with hands-on experience in Deep Learning, Computer Vision, and Java Full Stack Development. State-level data visualization winner.
+            </p>
 
-          {/* Tagline */}
-          <p
-            className="animate-fade-in-up delay-300"
-            style={{
-              fontSize: 'clamp(0.875rem, 1.6vw, 1.05rem)',
-              color: 'var(--color-text-secondary)',
-              lineHeight: 1.8,
-              maxWidth: '480px',
-              marginBottom: '2rem',
-              borderLeft: '2px solid rgba(245,197,66,0.3)',
-              paddingLeft: '1rem',
-            }}
-          >
-            {tagline}
-          </p>
+            {/* CTAs */}
+            <div style={{ display:'flex', flexWrap:'wrap', gap:12, marginBottom:48 }}>
+              <a href="#projects" onClick={(e) => { e.preventDefault(); document.querySelector('#projects')?.scrollIntoView({ behavior:'smooth' }) }}
+                className="btn btn-primary" id="hero-projects" style={{ padding:'11px 22px' }}
+              >
+                View Projects <ArrowRight size={15} />
+              </a>
+              <a href={personal.resumeUrl} download className="btn btn-secondary" id="hero-resume" style={{ padding:'11px 22px' }}>
+                <Download size={15} /> Download Resume
+              </a>
+              <a href="#contact" onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior:'smooth' }) }}
+                className="btn btn-ghost" id="hero-contact" style={{ padding:'11px 22px' }}
+              >
+                <Mail size={15} /> Contact
+              </a>
+            </div>
 
-          {/* Buttons */}
-          <div
-            className="animate-fade-in-up delay-400"
-            style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '2.5rem' }}
-          >
-            <a href="#projects" onClick={(e) => { e.preventDefault(); document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' }) }}
-              className="btn-accent" id="hero-view-projects">
-              <ChevronRight size={16} /> View Projects
-            </a>
-            <a href={personal.resumeUrl} className="btn-outline" id="hero-download-resume" download>
-              <Download size={16} /> Resume
-            </a>
-            <a href="#contact" onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }) }}
-              className="btn-ghost" id="hero-contact">
-              <Mail size={16} /> Contact
-            </a>
-          </div>
+            {/* Stats row */}
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:1, borderRadius:14, overflow:'hidden', border:'1px solid var(--border)', background:'var(--border)' }}>
+              {STATS.map((s, i) => (
+                <div key={s.sub} style={{ background:'var(--bg-card)', padding:'16px 8px', textAlign:'center' }}>
+                  <div style={{ fontFamily:'var(--font-display)', fontSize:22, fontWeight:800, letterSpacing:'-0.03em' }} className="text-grad-amber">{s.n}</div>
+                  <div style={{ fontSize:10.5, fontWeight:600, color:'var(--t3)', textTransform:'uppercase', letterSpacing:'0.1em', marginTop:3 }}>{s.sub}</div>
+                </div>
+              ))}
+            </div>
 
-          {/* Stats */}
-          <div
-            className="animate-fade-in-up delay-500"
-            style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem 2.5rem' }}
-          >
-            {stats.map((s, i) => (
-              <div key={s.label} style={{ paddingRight: i < stats.length - 1 ? '2.5rem' : 0, borderRight: i < stats.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none' }}>
-                <div className="font-display gradient-text" style={{ fontSize: '1.6rem', fontWeight: 800, lineHeight: 1 }}>{s.value}</div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', marginTop: '0.2rem', letterSpacing: '0.06em' }}>{s.label}</div>
+            {/* Social links */}
+            <div style={{ display:'flex', alignItems:'center', gap:16, marginTop:28 }}>
+              <span style={{ fontSize:11, fontWeight:600, color:'var(--t3)', textTransform:'uppercase', letterSpacing:'0.12em' }}>Find me on</span>
+              <a href={personal.github} target="_blank" rel="noopener noreferrer"
+                style={{ display:'flex', alignItems:'center', gap:7, fontSize:13, fontWeight:500, color:'var(--t2)', textDecoration:'none', padding:'6px 12px', borderRadius:8, border:'1px solid var(--border)', background:'var(--bg-card)', transition:'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(99,202,236,0.3)'; e.currentTarget.style.color='var(--cyan)' }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.color='var(--t2)' }}
+              >
+                <FaGithub size={14} /> GitHub
+              </a>
+              <a href={personal.linkedin} target="_blank" rel="noopener noreferrer"
+                style={{ display:'flex', alignItems:'center', gap:7, fontSize:13, fontWeight:500, color:'var(--t2)', textDecoration:'none', padding:'6px 12px', borderRadius:8, border:'1px solid var(--border)', background:'var(--bg-card)', transition:'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(99,202,236,0.3)'; e.currentTarget.style.color='var(--cyan)' }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.color='var(--t2)' }}
+              >
+                <FaLinkedin size={14} /> LinkedIn
+              </a>
+              <div style={{ display:'flex', alignItems:'center', gap:6, fontSize:12, color:'var(--t3)' }}>
+                <MapPin size={12} className="text-cyan" /> Karnataka, India
               </div>
-            ))}
+            </div>
           </div>
-        </div>
 
-        {/* RIGHT — photo */}
-        <div
-          className="animate-fade-in delay-300"
-          style={{
-            flex: '0 0 auto',
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          <PhotoFrame src={personal.profilePhoto} name={personal.firstName} />
+          {/* ── RIGHT PHOTO ── */}
+          <div style={{ display:'flex', justifyContent:'center', opacity: v ? 1 : 0, transform: v ? 'none' : 'translateX(24px)', transition:'all 0.8s 0.15s var(--ease-out)' }}
+            className="hero-photo-col"
+          >
+            <div style={{ position:'relative' }} className="anim-float">
+              {/* Glow ring */}
+              <div style={{ position:'absolute', inset:-16, borderRadius:28, background:'radial-gradient(ellipse, rgba(99,202,236,0.15) 0%, transparent 70%)', filter:'blur(20px)', pointerEvents:'none' }} />
+              {/* Border gradient */}
+              <div style={{ position:'absolute', inset:-2, borderRadius:24, background:'linear-gradient(135deg,rgba(99,202,236,0.4),rgba(99,202,236,0.05) 50%,rgba(240,180,41,0.15))', padding:2, borderRadius:24 }}>
+                <div style={{ width:'100%', height:'100%', borderRadius:22, background:'var(--bg-card)' }} />
+              </div>
+
+              {/* Photo */}
+              <div style={{ position:'relative', width:'clamp(240px,30vw,320px)', aspectRatio:'3/4', borderRadius:22, overflow:'hidden', background:'var(--bg-card-2)', zIndex:1 }}>
+                <img
+                  src={personal.profilePhoto} alt="Prathiksha P Mallya"
+                  style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'top', display:'block' }}
+                  onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex' }}
+                />
+                <div style={{ display:'none', position:'absolute', inset:0, alignItems:'center', justifyContent:'center', flexDirection:'column', gap:8 }}>
+                  <span style={{ fontFamily:'var(--font-display)', fontWeight:900, fontSize:56 }} className="text-grad-cyan">PM</span>
+                </div>
+                {/* Bottom vignette */}
+                <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(4,6,15,0.5) 0%, transparent 50%)', pointerEvents:'none' }} />
+              </div>
+
+              {/* Status badge */}
+              <div style={{
+                position:'absolute', bottom:16, left:'50%', transform:'translateX(-50%)',
+                whiteSpace:'nowrap', display:'flex', alignItems:'center', gap:8,
+                padding:'8px 16px', borderRadius:999,
+                background:'rgba(4,6,15,0.88)', backdropFilter:'blur(12px)',
+                border:'1px solid rgba(99,202,236,0.2)', zIndex:2,
+                fontSize:12, fontWeight:700, color:'var(--cyan)',
+              }}>
+                <span style={{ width:7, height:7, borderRadius:'50%', background:'#22c55e', boxShadow:'0 0 8px #22c55e' }} />
+                Open to Work
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Scroll arrow */}
-      <a
-        href="#about"
-        onClick={(e) => { e.preventDefault(); document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' }) }}
-        className="animate-float"
-        style={{
-          position: 'absolute',
-          bottom: '2rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.3rem',
-          color: 'var(--color-text-muted)',
-          textDecoration: 'none',
-          fontSize: '0.65rem',
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-          zIndex: 2,
-        }}
-        aria-label="Scroll to About section"
+      {/* Scroll hint */}
+      <a href="#about" onClick={e => { e.preventDefault(); document.querySelector('#about')?.scrollIntoView({ behavior:'smooth' }) }}
+        style={{ position:'absolute', bottom:28, left:'50%', transform:'translateX(-50%)', display:'flex', flexDirection:'column', alignItems:'center', gap:5, textDecoration:'none', color:'var(--t3)', fontSize:10, fontWeight:600, letterSpacing:'0.14em', textTransform:'uppercase', transition:'color 0.2s', animation:'fadeUp 1s 1s both' }}
+        onMouseEnter={e => e.currentTarget.style.color='var(--cyan)'}
+        onMouseLeave={e => e.currentTarget.style.color='var(--t3)'}
       >
-        <ArrowDown size={16} />
+        <ChevronDown size={16} style={{ animation:'float 2s ease-in-out infinite' }} />
         Scroll
       </a>
+
+      <style>{`
+        @media(min-width:900px){
+          .hero-grid{ grid-template-columns:1fr 1fr !important; }
+          .hero-photo-col{ justify-content:flex-end !important; }
+        }
+        @keyframes glow{ 0%,100%{opacity:0.6} 50%{opacity:1} }
+        @keyframes float{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        @keyframes fadeUp{ from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+      `}</style>
     </section>
   )
 }

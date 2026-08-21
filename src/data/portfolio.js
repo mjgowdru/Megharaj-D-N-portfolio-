@@ -1,240 +1,190 @@
 // ============================================================
 //  PORTFOLIO DATA — Edit everything about yourself right here
-//  No need to touch any component files.
 // ============================================================
 
 export const personal = {
-  name:         'MEGHARAJ D N',
-  initials:     'MJ',
-  firstName:    'Megharaj',
-  title:        'AI & Machine Learning Student',
-  subtitle:     'Aspiring Software Engineer',
+  name:         'Prathiksha P Mallya',
+  firstName:    'Prathiksha',
+  lastName:     'P Mallya',
+  initials:     'PM',
+  title:        'AI & Machine Learning Graduate',
+  subtitle:     'Java Full Stack Developer | AI/ML Engineer',
+  tagline:      'Artificial Intelligence and Machine Learning graduate with hands-on experience in Java Full Stack Development, Computer Vision, Deep Learning, and AI-powered web applications.',
   location:     'Karnataka, India',
-  email:        'megharajdngowda@gmail.com',         // ← change this
-  phone:        '6362794860',                                // ← optional
-  github:       'https://github.com/mjgowdru',  // ← change this
-  linkedin:     'https://www.linkedin.com/in/megharaj-d-n-9a1a4a386/', // ← change this
-  resumeUrl:    '/Megharaj_D_N_Resume.pdf',                     // place resume.pdf in /public
-  profilePhoto: '/profile.jpg',                    // place your photo in /public
-  available:    true,                              // toggle the green "available" badge
+  email:        'artsonu26@gmail.com',
+  phone:        '+91 7338682609',
+  github:       'https://github.com/prathzeee26/Prathiksha-P-Mallya-Portfolioo.git',
+  linkedin:     'https://www.linkedin.com/in/prathiksha-p-mallyya-145a04306',
+  resumeUrl:    '/Prathiksha P Mallya resume.pdf',
+  profilePhoto: '/profile.jpg',
+  available:    true,
 }
 
 // Short lines that cycle in the typewriter in the Hero
 export const roles = [
-  'AI & ML Student',
-  'Python Developer',
-  'NLP Enthusiast',
-  'Backend Engineer',
+  'AI & Machine Learning Graduate',
+  'Java Full Stack Developer',
+  'AI/ML Engineer',
+  'Computer Vision Specialist',
   'Problem Solver',
 ]
 
 // One-line tagline shown under the typewriter
-export const tagline =
-  'Building intelligent systems with Python, NLP, and scalable backend technologies.'
+export const tagline = 'Building Intelligent AI Solutions & Full Stack Applications'
 
-// A short personal quote (shown in the About section)
-export const personalQuote =
-  '"I believe every real-world problem has a data-driven solution waiting to be found."'
+export const subheading = 'Artificial Intelligence and Machine Learning graduate with hands-on experience in Java Full Stack Development, Computer Vision, Deep Learning, and AI-powered web applications.'
 
-// About section bio (split into two paragraphs)
+// About section bio
 export const bio = {
-  p1: `I'm a B.E. student in my 6th semester at a VTU-affiliated college, pursuing Computer Science through a Lateral Entry (Diploma) pathway. I started with a diploma, fell in love with programming, and never looked back.`,
-  p2: `My core interest is where artificial intelligence meets practical engineering. I've shipped real projects — a semantic plagiarism detector using Sentence-BERT and a blockchain-based certificate verification system — and I'm actively preparing for software engineering roles at product-based companies.`,
+  p1: "I am Prathiksha P Mallya, a passionate Artificial Intelligence and Machine Learning graduate with a strong foundation in software development, computer vision, deep learning, and Java Full Stack technologies.",
+  p2: "I enjoy building practical applications that combine AI intelligence with user-friendly web experiences. My experience includes developing machine learning models, integrating databases, building CRUD-based web applications, and working with modern development tools and frameworks.",
+  p3: "I am seeking opportunities where I can contribute to innovative software and AI-driven products while continuously expanding my technical expertise."
 }
+
+export const personalQuote = '"I combine the power of Artificial Intelligence with robust Full Stack architectures to deliver meaningful, industry-ready solutions."'
 
 // Education details
-export const education = {
-  degree:     'B.E. Computer Science (Lateral Entry)',
-  semester:   '7th Semester',
-  university: 'VTU-Affiliated College',
-  diploma:    'Diploma in Computer Science',
-}
-
-// ── SKILLS ─────────────────────────────────────────────────
-// level: 0–100 (shown as an animated progress bar)
-export const skillGroups = [
+export const educationList = [
   {
-    category: 'Programming & Databases',
-    emoji: '',
-    skills: [
-      { name: 'Python',   level: 88 },
-      { name: 'SQL',      level: 72 },
-      { name: 'MongoDB',  level: 68 },
-      { name: 'Java',     level: 60 },
-    ],
+    degree: 'B.E. in Artificial Intelligence & Machine Learning',
+    institution: 'Adichunchanagiri Institute of Technology, Chikkamagalur',
+    duration: '2022 – 2026',
+    score: 'CGPA: 8.01',
+    details: 'Focused on Deep Learning, Computer Vision, NLP, Software Engineering, and Database Systems. Active core committee member for department events.'
   },
   {
-    category: 'AI & Machine Learning',
-    emoji: '',
-    skills: [
-      { name: 'Machine Learning',  level: 82 },
-      { name: 'Deep Learning',     level: 70 },
-      { name: 'NLP',               level: 80 },
-      { name: 'Generative AI',     level: 65 },
-      { name: 'Scikit-learn',      level: 78 },
-      { name: 'PyTorch',           level: 62 },
-      { name: 'Sentence-BERT',     level: 76 },
-      { name: 'TF-IDF',            level: 74 },
-    ],
-  },
-  {
-    category: 'Web & Backend',
-    emoji: '',
-    skills: [
-      { name: 'Flask',        level: 80 },
-      { name: 'REST APIs',    level: 76 },
-      { name: 'Django',        level: 65 },
-      { name: 'Tailwind CSS', level: 70 },
-    ],
-  },
-  {
-    category: 'Tools & Ecosystem',
-    emoji: '',
-    skills: [
-      { name: 'Git & GitHub',     level: 80 },
-      { name: 'VS Code',          level: 90 },
-      { name: 'Jupyter Notebook', level: 82 },
-      { name: 'Streamlit',        level: 68 },
-    ],
-  },
+    degree: 'Pre-University Course (PUC)',
+    institution: 'Poornaprajna PU College, Udupi',
+    duration: '2020 – 2022',
+    score: 'Percentage: 83.8% (503/600)',
+    details: 'Specialized in PCMB (Physics, Chemistry, Mathematics, Biology).'
+  }
 ]
 
-// Extra tech shown as pills at the bottom of Skills section
-export const extraTech = [
-  'NumPy', 'Pandas', 'Solidity', 'Web3.py', 'Hardhat', 'Ganache', 'QR Code', 'NLTK',
+// ── SKILLS ─────────────────────────────────────────────────
+export const skillGroups = [
+  {
+    category: 'Programming Languages',
+    skills: ['Python', 'Java', 'C++', 'R Language']
+  },
+  {
+    category: 'AI & Data Science',
+    skills: ['Machine Learning', 'Deep Learning', 'Computer Vision', 'NLP', 'Data Science', 'Data Visualization']
+  },
+  {
+    category: 'Libraries & Frameworks',
+    skills: ['TensorFlow', 'PyTorch', 'OpenCV', 'Scikit-learn', 'Pandas', 'NumPy', 'Matplotlib', 'Streamlit']
+  },
+  {
+    category: 'Web Development',
+    skills: ['HTML', 'CSS', 'JavaScript']
+  },
+  {
+    category: 'Databases',
+    skills: ['MySQL', 'MongoDB']
+  },
+  {
+    category: 'Tools',
+    skills: ['GitHub', 'VS Code', 'Jupyter Notebook', 'Kaggle']
+  }
 ]
 
 // ── PROJECTS ───────────────────────────────────────────────
 export const projects = [
   {
-    id:          'plagiarism-detector',
-    label:       'Featured Project · NLP',
-    title:       'AI Plagiarism Detector',
-    subtitle:    'Semantic Document Similarity Engine',
-    description: `A semantic plagiarism detection system powered by Sentence-BERT embeddings.
-Instead of keyword matching, it captures deep linguistic meaning through contextual
-embeddings and computes cosine similarity across document pairs — delivering
-explainable, threshold-based plagiarism reports.`,
+    id:          'fashnavi',
+    label:       'Featured Project · AI & Fashion',
+    title:       'FASHNAVI',
+    subtitle:    'AI-Powered Fashion Recommendation System',
+    description: `An intelligent fashion recommendation web application that suggests personalized outfits based on:
+• Face shape
+• Body shape
+• Skin tone
+• Weather conditions`,
     highlights: [
-      'Sentence-BERT (SBERT) contextual embeddings for semantic understanding',
-      'Cosine similarity matrix for accurate multi-document comparison',
-      'Fully offline — no external API dependency required',
-      'Threshold-based classification with human-readable reports',
-      'Flask web interface for real-time document upload & analysis',
+      'CNN-based image classification for shape and skin tone detection',
+      'Personalized outfit recommendations tailored to user characteristics',
+      'Harmonious color suggestions matching the user\'s profile',
+      'Rich product descriptions and real-time pricing insights',
+      'Interactive and intuitive image upload interface for end-users',
     ],
-    tech:        ['Python', 'Flask', 'SBERT', 'Scikit-learn', 'NumPy', 'NLP'],
-    githubUrl:   'https://github.com/mjgowdru',  // ← your repo link
-    liveUrl:     '',                                // ← leave empty if no demo
-    accentColor: '#F5C542',
-    icon:        '🔍',
-  },
-  {
-    id:          'blockchain-cert',
-    label:       'Featured Project · Web3',
-    title:       'Certificate Verification System',
-    subtitle:    'Powered by Blockchain Technology',
-    description: `A decentralized credential verification platform built on Ethereum smart
-contracts. Institutions issue certificates stored on-chain; anyone can verify
-authenticity via QR code scanning — eliminating forgery and manual verification.`,
-    highlights: [
-      'Solidity smart contracts deployed via Hardhat + Ganache local blockchain',
-      'Web3.py integration for seamless Python ↔ blockchain communication',
-      'Flask backend with MongoDB for off-chain metadata storage',
-      'QR code generation for instant, shareable certificate verification',
-      'Student photo verification for added identity assurance',
-      'React + Tailwind CSS responsive front-end dashboard',
-    ],
-    tech:        ['Solidity', 'Flask', 'Web3.py', 'MongoDB', 'React', 'Tailwind CSS'],
-    githubUrl:   'https://github.com/mjgowdru',  // ← your repo link
-    liveUrl:     '',
-    accentColor: '#63b3ed',
-    icon:        '',
-  },
+    tech:        ['Python', 'TensorFlow', 'PyTorch', 'OpenCV', 'Streamlit', 'HTML', 'CSS'],
+    githubUrl:   'https://github.com/prathzeee26',
+    liveUrl:     '', // Add live demo URL when available
+    accentColor: '#D4AF37', // Primary Accent: Gold
+    icon:        '👗',
+    image:       '/fashnavi_preview.jpg'
+  }
 ]
 
-// ── LEARNING JOURNEY ───────────────────────────────────────
-// status: 'Active' | 'In Progress' | 'Upcoming' | 'Done'
-export const journeyItems = [
+// ── EXPERIENCE / INTERNSHIP ────────────────────────────────
+export const experiences = [
   {
-    phase:       'Phase 1 · Foundation',
-    title:       'Data Structures & Algorithms',
-    description: 'Building a strong CS foundation — arrays, linked lists, trees, graphs, dynamic programming, and complexity analysis. Solving problems consistently to build interview-readiness.',
-    status:      'Active',
-    tags:        ['LeetCode', 'Problem Solving', 'Time Complexity'],
-  },
-  {
-    phase:       'Phase 2 · Language Depth',
-    title:       'Java Fundamentals',
-    description: 'Exploring OOP through Java — inheritance, polymorphism, collections, and design patterns to understand enterprise software architecture and product-company codebases.',
-    status:      'In Progress',
-    tags:        ['OOP', 'Java', 'Design Patterns'],
-  },
-  {
-    phase:       'Phase 3 · Specialization',
-    title:       'Machine Learning & NLP',
-    description: 'Deep-diving into supervised & unsupervised learning, neural networks, transformer architectures, and NLP. Applied through real projects like the SBERT plagiarism detector.',
-    status:      'Active',
-    tags:        ['PyTorch', 'Transformers', 'SBERT', 'LLMs'],
-  },
-  {
-    phase:       'Phase 4 · Application',
-    title:       'Full-Stack Development',
-    description: 'Connecting backend logic to polished frontends — Flask APIs, React components, MongoDB, and deployment pipelines. Building complete, production-grade applications.',
-    status:      'Active',
-    tags:        ['Flask', 'React', 'MongoDB', 'REST APIs'],
-  },
-  {
-    phase:       'Phase 5 · Career Prep',
-    title:       'Product-Based Company Preparation',
-    description: 'Systematically preparing for SWE roles — system design, behavioral interviews, competitive programming, and mock sessions targeted at product-based companies.',
-    status:      'Upcoming',
-    tags:        ['System Design', 'CS Fundamentals', 'Interviews'],
-  },
+    role:        'Java Full Stack Intern',
+    company:     'X-workz ODC, Bangalore',
+    duration:    '4 Months',
+    responsibilities: [
+      'Developed Java Full Stack enterprise web applications adhering to clean coding standards.',
+      'Designed and implemented CRUD-based modules using Spring MVC and Hibernate framework.',
+      'Built stable MySQL database schemas and integrated them using Hibernate/JPA ORM.',
+      'Followed MVC architecture and industry best practices to ensure modular, readable code.',
+      'Utilized Maven for dependency management and Apache Tomcat for local web server deployment.',
+    ],
+    tech:        ['Java', 'Spring MVC', 'Hibernate', 'MySQL', 'JSP', 'Maven', 'Tomcat']
+  }
 ]
 
-// ── EXPERIENCE / ACTIVITIES ────────────────────────────────
-// status: 'Open' | 'Ongoing' | 'Upcoming' | 'Active' | 'Learning'
-export const activities = [
+// ── ACHIEVEMENTS ───────────────────────────────────────────
+export const achievements = [
   {
-    category:    'Internships',
-    title:       'Seeking Opportunities',
-    description: 'Actively looking for internships in AI/ML engineering, backend development, and full-stack roles. I bring hands-on project experience with Python, Flask, NLP, and blockchain systems.',
-    note:        'Available for Summer / Winter internships',
-    status:      'Open',
+    title:       '🏆 1st Place – Visualize It',
+    subtitle:    'State-Level Data Visualization Event',
+    institution: 'Adichunchanagiri Institute of Technology',
+    description: 'Secured first place in the state-level data visualization event by designing interactive, insights-rich dashboards translating complex datasets into actionable items.'
   },
   {
-    category:    'Academic Projects',
-    title:       'University & Self-Initiated Projects',
-    description: 'Beyond coursework, I independently conceptualize and build projects that solve real problems — from semantic plagiarism detection to decentralized certificate systems.',
-    note:        '2 major projects completed · More in pipeline',
-    status:      'Ongoing',
+    title:       '💡 Project Presentation – FASHNAVI',
+    subtitle:    'Presented at Code Quest 2025',
+    institution: 'Technical Symposium',
+    description: 'Presented FASHNAVI, the AI-powered fashion recommendation engine, demonstrating CNN models and database integrations to a panel of industry experts.'
   },
   {
-    category:    'Hackathons',
-    title:       'Competitive Building',
-    description: 'Interested in participating in hackathons to apply problem-solving under time constraints, collaborate cross-functionally, and prototype innovative AI-driven solutions.',
-    note:        'Looking to participate in upcoming events',
-    status:      'Upcoming',
+    title:       '🤝 Core Committee Member – AIgnite 2.0',
+    subtitle:    'National Level Technical Event',
+    institution: 'Department of AI & ML',
+    description: 'Led planning and operations for technical competitions, coordinating with sponsors, judges, and 200+ participants from colleges across India.'
   },
   {
-    category:    'Technical Events',
-    title:       'Community & Knowledge Sharing',
-    description: 'Engaged in the college technical community through workshops, seminars, and tech talks. Interested in presenting topics around AI, ML, and software engineering.',
-    note:        'Active in college technical clubs',
-    status:      'Active',
+    title:       '🎭 VTU Youth Festival Representative',
+    subtitle:    'Represented College for 4 Consecutive Years',
+    institution: 'Visvesvaraya Technological University (VTU) (2023–2026)',
+    description: 'Selected to represent the college for 4 consecutive years, showcasing team collaboration, creativity, and leadership at state-wide university fests.'
+  }
+]
+
+// ── CERTIFICATIONS ─────────────────────────────────────────
+export const certifications = [
+  {
+    title: 'Graphical and Statistical Analysis using R-Language',
+    issuer: 'Authorized Certification Board',
+    description: 'Acquired skills in data modeling, statistical distributions, and plotting advanced visualizations (ggplot2) using R.'
   },
   {
-    category:    'Achie',
-    title:       '1st Place – “Visualize IT” | DIGITISE 2K25',
-    description: 'Secured 1st place in the “Visualize IT” event at DIGITISE 2K25, the annual technical fest organized by the Department of Information Science & Engineering, Adichunchanagiri Institute of Technology, Chikkamagalur.This achievement reflects my ability to combine creativity, technical visualization, innovation, and problem-solving skills to present impactful technology-driven ideas. The event provided valuable experience in transforming concepts into clear and engaging visual solutions while working in a competitive technical environment.',
-    note:        'Building toward first open-source contribution',
-    status:      'Learning',
+    title: 'IoT and Its Applications Workshop',
+    issuer: 'Adichunchanagiri Institute of Technology',
+    description: 'Hands-on training in sensor interfacing, microcontroller programming (Arduino/ESP8266), and HTTP communication protocols.'
   },
+  {
+    title: 'BYTE-BRAWL State-Level Hackathon',
+    issuer: 'Hackathon Organizer',
+    description: 'Participated and built software prototypes under a tight 24-hour deadline, demonstrating agile problem solving.'
+  }
 ]
 
 // ── STATS (shown in Hero) ──────────────────────────────────
 export const stats = [
-  { value: '2+',  label: 'Major Projects' },
-  { value: '10+', label: 'Technologies'   },
-  { value: '7th', label: 'Semester (VTU)' },
+  { value: '8.01',  label: 'CGPA VTU' },
+  { value: '4 Mon', label: 'Internship'   },
+  { value: '1st',   label: 'State Winner' },
+  { value: '4 Yrs', label: 'VTU Youth Fest' },
 ]
